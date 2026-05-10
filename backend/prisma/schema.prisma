@@ -1,0 +1,48 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Affiliate {
+  id              String   @id @default(uuid())
+  name            String
+  email           String   @unique
+  solanaWallet    String
+  totalEarned     Float    @default(0)
+  totalPaid       Float    @default(0)
+  pendingAmount   Float    @default(0)
+  createdAt       DateTime @default(now())
+  payouts         Payout[]
+}
+
+model Payout {
+  id            String    @id @default(uuid())
+  affiliateId   String
+  affiliate     Affiliate @relation(fields: [affiliateId], references: [id])
+  amountUsdc    Float
+  solanaTxHash  String
+  dodoEventId   String
+  status        String    @default("confirmed")
+  createdAt     DateTime  @default(now())
+}
+
+model AgentAction {
+  id          String   @id @default(uuid())
+  type        String   // "payout" | "plan_upgrade" | "credit_issued" | "subscription_cancelled"
+  description String
+  metadata    String   // JSON string
+  createdAt   DateTime @default(now())
+}
+
+model Policy {
+  id                    String  @id @default("singleton")
+  payoutThresholdUsd    Float   @default(50)
+  maxMonthlyPayoutUsd   Float   @default(500)
+  autoUpgradeOnOverage  Boolean @default(true)
+  autoCancelInactiveDays Int    @default(60)
+}

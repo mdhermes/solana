@@ -118,6 +118,7 @@ Visit `http://localhost:5173` (Vite default)
 ## Database Schema
 
 ### Affiliate
+
 - `id` (UUID)
 - `name` (String)
 - `email` (String, unique)
@@ -127,6 +128,7 @@ Visit `http://localhost:5173` (Vite default)
 - `pendingAmount` (Float)
 
 ### Payout
+
 - `id` (UUID)
 - `affiliateId` (FK to Affiliate)
 - `amountUsdc` (Float)
@@ -135,12 +137,14 @@ Visit `http://localhost:5173` (Vite default)
 - `status` (String)
 
 ### AgentAction
+
 - `id` (UUID)
 - `type` (String: "payout" | "plan_upgrade" | "credit_issued")
 - `description` (String)
 - `metadata` (JSON)
 
 ### Policy
+
 - `id` (String: "singleton")
 - `payoutThresholdUsd` (Float, default: 50)
 - `maxMonthlyPayoutUsd` (Float, default: 500)
