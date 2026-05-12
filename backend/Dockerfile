@@ -16,4 +16,4 @@ RUN npm run build
 
 EXPOSE 3000
 
-CMD npx prisma db push --skip-generate && node dist/index.js
+CMD npx prisma db push && node dist/index.js
