@@ -4,7 +4,7 @@ import bs58 from "bs58";
 import fs from "fs";
 
 const USDC_MINT_DEVNET = new PublicKey(
-  "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU",
+  "BCqAit2k2gSEuwCiXLFW2osptnB3EC6D8RkuFkxKLbNL",
 );
 
 export const connection = new Connection(

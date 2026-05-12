@@ -58,10 +58,18 @@ export async function registerDashboardRoutes(app: FastifyInstance) {
   });
 
   // Manual agent trigger for demo
-  app.post("/api/agent/run", async () => {
-    const result = await runAgent(
-      "Check all affiliates with pending payouts above the threshold and pay them. Also check for any subscriptions needing upgrades.",
-    );
-    return { result };
+  app.post("/api/agent/run", async (request, reply) => {
+    try {
+      const body = request.body as any;
+      const prompt = body?.input || 
+        "Check all affiliates with pending payouts above the threshold and pay them.";
+      const result = await runAgent(prompt);
+      return { result };
+    } catch (err: any) {
+      reply.status(500).send({ 
+        error: "Agent execution failed",
+        message: err.message,
+      });
+    }
   });
 }
