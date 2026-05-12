@@ -2,6 +2,8 @@ FROM node:20-slim AS builder
 
 WORKDIR /app
 
+RUN apt-get update -qq && apt-get install -y -qq --no-install-recommends openssl ca-certificates && rm -rf /var/lib/apt/lists/*
+
 COPY package*.json ./
 RUN npm install
 
@@ -24,4 +26,6 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
-CMD ["node", "dist/index.js"]
+
+# Push DB schema on start, then run the app
+CMD npx prisma db push --skip-generate && node dist/index.js
