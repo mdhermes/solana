@@ -4,12 +4,12 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Affiliate {
-  id              String   @id @default(uuid())
+  id              String   @id @default(uuid()) @db.Uuid
   name            String
   email           String   @unique
   solanaWallet    String
@@ -21,8 +21,8 @@ model Affiliate {
 }
 
 model Payout {
-  id            String    @id @default(uuid())
-  affiliateId   String
+  id            String    @id @default(uuid()) @db.Uuid
+  affiliateId   String    @db.Uuid
   affiliate     Affiliate @relation(fields: [affiliateId], references: [id])
   amountUsdc    Float
   solanaTxHash  String
@@ -32,7 +32,7 @@ model Payout {
 }
 
 model AgentAction {
-  id          String   @id @default(uuid())
+  id          String   @id @default(uuid()) @db.Uuid
   type        String   // "payout" | "plan_upgrade" | "credit_issued" | "subscription_cancelled"
   description String
   metadata    String   // JSON string
